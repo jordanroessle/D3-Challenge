@@ -78,7 +78,7 @@ function resizeChart() {
             
         
         // add text to each circle
-        var textGroup = chartGroup.selectAll("aText")
+        var textGroup = chartGroup.selectAll(".aText")
             .data(stateData)
             .enter()
             .append("text")

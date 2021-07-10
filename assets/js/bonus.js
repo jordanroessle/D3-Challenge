@@ -14,10 +14,10 @@ function resizeChart() {
 
     // margin
     var margin = {
-        top: 50,
-        bottom: 50,
-        right: 50,
-        left: 50
+        top: 100,
+        bottom: 100,
+        right: 100,
+        left: 100
     };
 
     // true height and width 
@@ -124,21 +124,28 @@ function resizeChart() {
 
 
         var bottomLabels = ["In Poverty (%)", "Age Median", "Household Income (Median)"];
-        var leftLabels = ["Obeses (%)", "Smokes(%), Lacks Healthcare (%)"];
+        var leftLabels = ["Obeses (%)", "Smokes(%)", "Lacks Healthcare (%)"];
 
         // add axis labels
-        var bottomAxisGroup = chartGroup.append("text")
+        var leftAxisGroup = chartGroup.selectAll(".aText")
+            .data(leftLabels)
+            .enter()
+            .append("text")
             .attr("transform", "rotate(-90)")
-            .attr("y", 0 - margin.left)
+            .attr("y", (d,i) => 0 - margin.left + i*20)
             .attr("x", 0 - (height / 2))
             .attr("dy", "1em")
-            .attr("class", "active aText")
-            .text("Percentage of Population that Smokes (%)");
+            .attr("class", "inactive aText")
+            .text(d => d);
 
-        var leftAxisGroup = chartGroup.append("text")
-            .attr("transform", `translate(${width / 2}, ${height + margin.top - 10})`)
-            .attr("class", "active aText")
-            .text("Average Age");
+        var bottomAxisGroup = chartGroup.selectAll(".aTextBottom")
+            .data(bottomLabels)
+            .enter()
+            .append("text")
+            .attr("x", width / 2)
+            .attr("y", (d,i) => height + margin.bottom - 10 - i*20 )
+            .attr("class", "inactive aText")
+            .text(d => d);
         
 
 

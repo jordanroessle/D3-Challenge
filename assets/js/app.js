@@ -84,7 +84,7 @@ function resizeChart() {
             
         
         // add text to each circle
-        var textGroup = chartGroup.selectAll(".aText")
+        var textGroup = chartGroup.selectAll(".stateText")
             .data(stateData)
             .enter()
             .append("text")
@@ -129,12 +129,12 @@ function resizeChart() {
             .attr("x", 0 - (height / 2))
             .attr("dy", "1em")
             .attr("class", "active aText")
-            .text("Percentage of Population that Smokes (%)");
+            .text("Smokes (%)");
 
         chartGroup.append("text")
             .attr("transform", `translate(${width / 2}, ${height + margin.top - 10})`)
             .attr("class", "active aText")
-            .text("Average Age");
+            .text("Age Median");
         
 
 

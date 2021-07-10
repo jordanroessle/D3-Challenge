@@ -122,8 +122,12 @@ function resizeChart() {
               toolTip.hide(d);
           });
 
+
+        var bottomLabels = ["In Poverty (%)", "Age Median", "Household Income (Median)"];
+        var leftLabels = ["Obeses (%)", "Smokes(%), Lacks Healthcare (%)"];
+
         // add axis labels
-        chartGroup.append("text")
+        var bottomAxisGroup = chartGroup.append("text")
             .attr("transform", "rotate(-90)")
             .attr("y", 0 - margin.left)
             .attr("x", 0 - (height / 2))
@@ -131,7 +135,7 @@ function resizeChart() {
             .attr("class", "active aText")
             .text("Percentage of Population that Smokes (%)");
 
-        chartGroup.append("text")
+        var leftAxisGroup = chartGroup.append("text")
             .attr("transform", `translate(${width / 2}, ${height + margin.top - 10})`)
             .attr("class", "active aText")
             .text("Average Age");

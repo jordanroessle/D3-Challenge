@@ -43,13 +43,19 @@ function resizeChart() {
             data.smokes = +data.smokes;
         });
 
+        // multipliers to keep data off of the axes in the graph        
+        var multiplierLower = .9;
+        var multiplierHigh = 1.1;
+
         // create scales
         var xLinearScale = d3.scaleLinear()
-            .domain([d3.min(stateData, d => d.age), d3.max(stateData, d => d.age)])
+            .domain([d3.min(stateData, d => d.age) * multiplierLower, 
+                        d3.max(stateData, d => d.age) * multiplierHigh])
             .range([0, width]); 
         
         var yLinearScale = d3.scaleLinear()
-            .domain([d3.min(stateData, d => d.smokes), d3.max(stateData, d => d.smokes)])
+            .domain([d3.min(stateData, d => d.smokes) * multiplierLower, 
+                        d3.max(stateData, d => d.smokes) * multiplierHigh])
             .range([height, 0]);
     
         // create axes
@@ -123,12 +129,12 @@ function resizeChart() {
             .attr("x", 0 - (height / 2))
             .attr("dy", "1em")
             .attr("class", "active aText")
-            .text("Smokes");
+            .text("Percentage of Population that Smokes (%)");
 
         chartGroup.append("text")
             .attr("transform", `translate(${width / 2}, ${height + margin.top - 10})`)
             .attr("class", "active aText")
-            .text("Age");
+            .text("Average Age");
         
 
 

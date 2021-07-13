@@ -10,7 +10,7 @@ function resizeChart() {
 
     // set dimensions of area based on window
     var svgWidth = window.innerWidth;
-    var svgHeight = window.innerHeight;
+    var svgHeight = window.innerHeight - 200;
 
     // margin
     var margin = {

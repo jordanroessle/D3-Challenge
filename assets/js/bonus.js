@@ -87,11 +87,13 @@ function resizeChart() {
 
     function updateToolTip(chosenXAxis, chosenYAxis, circlesGroup, textGroup) {
         var labelX;
+        var postLabel = "";
         var labelY;
       
         switch(chosenXAxis) {
             case "poverty":
                 labelX = "Poverty:";
+                postLabel = "%"
                 break;
             case "age":
                 labelX = "Age:";
@@ -102,7 +104,7 @@ function resizeChart() {
         }
         switch(chosenYAxis) {
             case "obesity":
-                labelY = "Obese:";
+                labelY = "Obesity:";
                 break;
             case "smokes":
                 labelY = "Smokes:";
@@ -118,8 +120,8 @@ function resizeChart() {
             .offset([80, -60])
             .html(function(d) {
                 return (`<strong>${d.state}</strong><br>
-                <strong>${labelX} ${d[chosenXAxis]}</strong><br>
-                <strong>${labelY} ${d[chosenYAxis]}</strong><br>`)
+                <strong>${labelX} ${d[chosenXAxis]}${postLabel}</strong><br>
+                <strong>${labelY} ${d[chosenYAxis]}%</strong><br>`)
             });
         
         // call tool tip 
@@ -196,6 +198,8 @@ function resizeChart() {
             .attr("class", "stateText")
             .text(d => d.abbr);
 
+        // initialize tooltip
+        updateToolTip(chosenXAxis, chosenYAxis, circlesGroup, textGroup);
          
         // initialize labels on bottom
         var bottomLabelsGroup = chartGroup.append("g")

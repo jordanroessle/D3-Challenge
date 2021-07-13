@@ -37,6 +37,7 @@ function resizeChart() {
     var chosenXAxis = "poverty";
     var chosenYAxis = "obesity";
 
+    // returns scale for x axis
     function xScale(stateData, chosenXAxis) {
         var xLinearScale = d3.scaleLinear()
             .domain([d3.min(stateData, d => d[chosenXAxis]) * 0.8,
@@ -45,6 +46,7 @@ function resizeChart() {
         return xLinearScale;
     }
 
+    // returns scale for y axis
     function yScale(stateData, chosenYAxis) {
         var yLinearScale = d3.scaleLinear()
             .domain([d3.min(stateData, d => d[chosenYAxis]) * 0.8,
@@ -53,6 +55,7 @@ function resizeChart() {
         return yLinearScale;
     }
 
+    // updates scale on x axis
     function renderXAxis(newXScale, xAxis) {
         var bottomAxis = d3.axisBottom(newXScale);
         xAxis.transition()
@@ -61,6 +64,7 @@ function resizeChart() {
         return xAxis;
     }
 
+    // updates scale on y axis
     function renderYAxis(newYScale, yAxis) {
         var leftAxis = d3.axisLeft(newYScale);
         yAxis.transition()
@@ -69,6 +73,7 @@ function resizeChart() {
         return yAxis;
     }
 
+    // updates position of circles
     function renderCicles(circlesGroup, newXScale, chosenXAxis, newYScale, chosenYAxis) {
         circlesGroup.transition()
           .duration(1000)
@@ -77,6 +82,7 @@ function resizeChart() {
         return circlesGroup;
     }
 
+    // updates the state text
     function updateText(textGroup, newXScale, chosenXAxis, newYScale, chosenYAxis) {
         textGroup.transition()
             .duration(1000)
@@ -85,6 +91,7 @@ function resizeChart() {
         return textGroup;
     }
 
+    // updates the tooltip
     function updateToolTip(chosenXAxis, chosenYAxis, circlesGroup, textGroup) {
         var labelX;
         var postLabel = "";
@@ -201,7 +208,7 @@ function resizeChart() {
         // initialize tooltip
         updateToolTip(chosenXAxis, chosenYAxis, circlesGroup, textGroup);
          
-        // initialize labels on bottom
+        // initialize labels on x axis
         var bottomLabelsGroup = chartGroup.append("g")
             .attr("transform", `translate(${width / 2}, ${height + 20})`);
 
@@ -226,7 +233,7 @@ function resizeChart() {
           .classed("inactive", true)
           .text("Household Income (Median)");
 
-        // initialize labels on left
+        // initialize labels on y axis
         var leftLabelsGroup = chartGroup.append("g")
             .attr("transform", `translate(${-margin.left}, ${width / 2}) rotate(-90)`)
             
@@ -251,17 +258,23 @@ function resizeChart() {
             .classed("inactive", true)
             .text("Lacks Healthcare (%)");
 
-        // bottom event listener
+        // event handler for y axis
         bottomLabelsGroup.selectAll("text")
             .on("click", function() {
                 var value = d3.select(this).attr("value");
                 if(value !== chosenXAxis) {
                     chosenXAxis = value;
+                    
+                    // update sclae
                     xLinearScale = xScale(stateData, chosenXAxis);
                     xAxis = renderXAxis(xLinearScale, xAxis);
+                    
+                    // update circles, text, and tooltip
                     circlesGroup = renderCicles(circlesGroup, xLinearScale, chosenXAxis, yLinearScale, chosenYAxis);
                     textGroup = updateText(textGroup, xLinearScale, chosenXAxis, yLinearScale, chosenYAxis);
                     circlesGroup = updateToolTip(chosenXAxis, chosenYAxis, circlesGroup, textGroup);
+                    
+                    //update boldness
                     switch(chosenXAxis) {
                         case "poverty":
                             povertyLabel.classed("active", true);
@@ -290,16 +303,24 @@ function resizeChart() {
                     }
                 }
         })
+
+        // event handler for y axis
         leftLabelsGroup.selectAll("text")
             .on("click", function() {
                 var value = d3.select(this).attr("value");
                 if(value !== chosenYAxis) {
                     chosenYAxis = value;
+
+                    // update sclae
                     yLinearScale = yScale(stateData, chosenYAxis);
                     yAxis = renderYAxis(yLinearScale, yAxis);
+                    
+                    // update circles, text, and tooltip
                     circlesGroup = renderCicles(circlesGroup, xLinearScale, chosenXAxis, yLinearScale, chosenYAxis);
                     textGroup = updateText(textGroup, xLinearScale, chosenXAxis, yLinearScale, chosenYAxis);
                     circlesGroup = updateToolTip(chosenXAxis, chosenYAxis, circlesGroup, textGroup);
+                    
+                    //update boldness
                     switch(chosenYAxis) {
                         case "obesity":
                             obeseLabel.classed("active", true);
@@ -329,36 +350,13 @@ function resizeChart() {
                 }
             }
         )
-
-        
-
-
     }).catch(function(error) {
         console.log(error);
     })
 }
 
+// run plot on launch
 resizeChart();
 
+// resize if window size changes
 d3.select(window).on("resize", resizeChart);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
